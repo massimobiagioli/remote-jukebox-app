@@ -2,6 +2,7 @@ import { createDOM } from '@builder.io/qwik/testing';
 import { test, expect } from 'vitest';
 import { SongCard } from './song-card';
 import { JukeBoxContentRow } from '~/models/song';
+import { $ } from '@builder.io/qwik';
 
 const aSong: JukeBoxContentRow = {
     id: 1,
@@ -17,9 +18,13 @@ const aSong: JukeBoxContentRow = {
     song_number: 2,
 }
 
+const handlePublish = $((message: string) => {
+    console.log(message);
+});
+
 test(`[SongCard Component]: Should render`, async () => {
     const { screen, render } = await createDOM();
-    await render(<SongCard song={aSong} />);
+    await render(<SongCard song={aSong} publishCallback={handlePublish}/>);
     expect(screen.outerHTML).toContain('Come Together - The Beatles (1969)');
     expect(screen.outerHTML).toContain('#folder: 1 - #song: 2');
 });
